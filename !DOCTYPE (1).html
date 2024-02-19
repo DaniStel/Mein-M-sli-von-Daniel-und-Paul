@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MeinMüsli</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+<nav>
+<ul>
+<li><a href="#Startseite">Startseite</a></li>
+<li><a href="#Über uns">Über uns</a></li>
+<li><a href="#Zusammenstellen">Zusammenstellen</a></li>
+<li><a href="#kontakt">Kontakt</a></li>
+</ul>
+</nav>
+</header>
+<main>
+<section id="Startseite">
+<div class="Container">
+<h2>Stelis</h2>
+</div>
+</section>
+
+<section id="Über uns">
+<div class="Container">
+<h1>Wir bieten individuell zusammenstellbare Müslis an</h1>
+<p>Unsere Müslioptionen.</p>
+<ul>
+<li>Basis = 3,50€ Grundpreis</li>
+<li>Verfeinerung = 4,00€</li>
+<li>Früchte = 4,00€</li>
+<li>Nüsse und Kerne = 4,00€</li>
+<li>Extras = 4,00€</li>
+</ul>
+</div>
+</section>
+
+<section id="Zusammenstellen">
+<div class="container">
+<h2>Müsli zusammenstellen</h2>
+
+<div id="selected-options"></div>
+
+<form action="#" onsubmit="return false;">
+  
+  <div class="category">
+    <h3>Basis</h3>
+    <label>
+      <input type="checkbox" name="basis" value="Tropic"> Tropic
+    </label><br>
+    <label>
+      <input type="checkbox" name="basis" value="Bircher"> Bircher
+    </label><br>
+    <label>
+      <input type="checkbox" name="basis" value="Chocolate"> Chocolate
+    </label><br>
+  </div>
+
+  <div class="category">
+    <h3>Verfeinerung</h3>
+    <label>
+      <input type="checkbox" name="verfeinerung" value="Amaranth"> Amaranth
+    </label><br>
+    <label>
+      <input type="checkbox" name="verfeinerung" value="Dinkel"> Dinkel
+    </label><br>
+    <label>
+      <input type="checkbox" name="verfeinerung" value="Leinsamen"> Leinsamen
+    </label><br>
+    <label>
+      <input type="checkbox" name="verfeinerung" value="Quinoa"> Quinoa
+    </label><br>
+  </div>
+
+  <div class="category">
+    <h3>Früchte</h3>
+    <label>
+      <input type="checkbox" name="fruechte" value="Ananas"> Ananas
+    </label><br>
+    <label>
+      <input type="checkbox" name="fruechte" value="Apfelstücke"> Apfelstücke
+    </label><br>
+    <label>
+      <input type="checkbox" name="fruechte" value="Cranberries"> Cranberries
+    </label><br>
+    <label>
+      <input type="checkbox" name="fruechte" value="Mango"> Mango
+    </label><br>
+    <label>
+      <input type="checkbox" name="fruechte" value="Gojibeeren"> Gojibeeren
+    </label><br>
+  </div>
+
+  <div class="category">
+    <h3>Extras</h3>
+    <label>
+      <input type="checkbox" name="extras" value="Cranberry-Chocs"> Cranberry-Chocs
+    </label><br>
+    <label>
+      <input type="checkbox" name="extras" value="Honigflocken"> Honigflocken
+    </label><br>
+    <label>
+      <input type="checkbox" name="extras" value="Schoko-Crunchy"> Schoko-Crunchy
+    </label><br>
+    <label>
+      <input type="checkbox" name="extras" value="Rosinen-Chocs"> Rosinen-Chocs
+    </label><br>
+  </div>
+
+  <div class="category">
+    <label for="discount-code">Rabattcode:</label>
+    <input type="text" id="discount-code"><br>
+  </div>
+
+  <button onclick="showMix()">Mix erstellen</button>
+</form>
+
+<div id="order-summary"></div>
+
+<script>
+  function showMix() {
+    var selectedOptions = [];
+    var basisPrice = 3.50;
+    var otherCategoryPrice = 4.00;
+    var total = 0;
+
+    var checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+    checkboxes.forEach(function(checkbox) {
+      selectedOptions.push(checkbox.value);
+    });
+
+    selectedOptions.forEach(function(option) {
+      if (option === 'Tropic' || option === 'Bircher' || option === 'Chocolate') {
+        total += basisPrice;
+      } else {
+        total += otherCategoryPrice;
+      }
+    });
+
+    var shippingCost = calculateShippingCost(total);
+    var discount = applyDiscountCode(total);
+    total += shippingCost - discount;
+
+    var orderSummary = document.getElementById('order-summary');
+    orderSummary.innerHTML = '<h2>Bestellübersicht</h2>' +
+      '<p>Gemischtes Müsli: ' + selectedOptions.join(', ') + '</p>' +
+      '<p>Summe: ' + total.toFixed(2) + '€</p>' +
+      '<button onclick="buy(' + total.toFixed(2) + ')">Jetzt kaufen</button>';
+  }
+
+  function calculateShippingCost(total) {
+    if (total < 20) {
+      return 3.99;
+    } else if (total < 50) {
+      return 1.80;
+    } else {
+      return 0;
+    }
+  }
+
+  function applyDiscountCode(total) {
+    var discountCode = document.getElementById('discount-code').value;
+    if (discountCode === 'gesund24') {
+      return total * 0.10;
+    } else {
+      return 0;
+    }
+  }
+
+  function buy(total) {
+    var confirmation = confirm('Möchten Sie Ihr Müsli für ' + total + '€ kaufen?');
+    if (confirmation) {
+      alert('Vielen Dank für Ihren Einkauf!');
+    }
+  }
+</script>
+
+<section id="kontakt">
+<div class="container">
+<h1>Unser Kontakt</h1>
+<p>Nehmen sie Kontakt mit uns auf</p>
+<ul>
+<li>daniel.steli@sts-lohbruegge.de</li>
+<li>paul.schreiber@sts-lohbruegge.de</li>
+</ul>
+</div>
+</section>
+
+</main>
+<footer>
+<p>© Copyright 2024 Stelis Co LTd.</p>
+</footer>
+</body>
+</html>
